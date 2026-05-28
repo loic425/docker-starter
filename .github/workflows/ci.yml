@@ -71,6 +71,9 @@ jobs:
             - name: "Run PHPUnit"
               run: "castor qa:phpunit"
 
+#            - name: "Run Behat"
+#              run: "castor qa:behat --format=progress"
+
             - name: "Test HTTP server"
               run: |
                   set -e

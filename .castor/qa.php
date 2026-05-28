@@ -18,8 +18,9 @@ function all(): int
     $phpstan = phpstan();
     $twigCs = twigCs();
     $phpunit = phpunit();
+    // $behat = behat();
 
-    return max($cs, $phpstan, $twigCs, $phpunit);
+    return max($cs, $phpstan, $twigCs, $phpunit/* , $behat */);
 }
 
 #[AsTask(description: 'Installs tooling')]
@@ -55,6 +56,21 @@ function phpunit(#[AsRawTokens] array $rawTokens = []): int
     io()->section('Running PHPUnit...');
 
     return docker_exit_code('vendor/bin/phpunit ' . implode(' ', $rawTokens));
+}
+
+/**
+ * @param string[] $rawTokens
+ */
+#[AsTask(description: 'Runs Behat', aliases: ['behat'])]
+function behat(#[AsRawTokens] array $rawTokens = []): int
+{
+    if (!is_file(variable('root_dir') . '/application/vendor/bin/behat')) {
+        return 0;
+    }
+
+    io()->section('Running Behat...');
+
+    return docker_exit_code('vendor/bin/behat ' . implode(' ', $rawTokens));
 }
 
 #[AsTask(description: 'Runs PHPStan', aliases: ['phpstan'])]
